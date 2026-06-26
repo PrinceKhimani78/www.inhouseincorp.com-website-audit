@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InHouse - Website Performance & Digital Presence Audit</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* HSL Color System */
+            --hue-primary: 220; /* Deep blue */
+            --hue-accent: 38;    /* Warm Gold */
+            
+            --primary: hsl(var(--hue-primary), 56%, 28%);
+            --primary-light: hsl(var(--hue-primary), 45%, 45%);
+            --primary-dark: hsl(var(--hue-primary), 60%, 15%);
+            --accent: hsl(var(--hue-accent), 95%, 52%);
+            
+            --score-poor: hsl(0, 84%, 60%);
+            --score-average: hsl(38, 95%, 52%);
+            --score-good: hsl(142, 70%, 45%);
+            
+            /* Theme Dependent Variables (Dark mode by default) */
+            --bg-body: #0b0f19;
+            --bg-card: rgba(17, 24, 39, 0.7);
+            --bg-card-hover: rgba(26, 36, 57, 0.85);
+            --border-card: rgba(255, 255, 255, 0.08);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --text-heading: #ffffff;
+            --shadow-card: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            --glass-blur: blur(12px);
+            --tab-active-bg: rgba(255, 255, 255, 0.1);
+            --accent-glow: rgba(245, 158, 11, 0.15);
+        }
+
+        [data-theme="light"] {
+            --bg-body: #f4f6fa;
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --bg-card-hover: rgba(255, 255, 255, 0.98);
+            --border-card: rgba(32, 58, 113, 0.12);
+            --text-main: #374151;
+            --text-muted: #6b7280;
+            --text-heading: #111827;
+            --shadow-card: 0 8px 32px 0 rgba(32, 58, 113, 0.08);
+            --tab-active-bg: rgba(32, 58, 113, 0.08);
+            --accent-glow: rgba(245, 158, 11, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-heading);
+            font-weight: 700;
+        }
+
+        /* Container Layout */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Glassmorphism Card Style */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border-radius: 16px;
+            padding: 1.75rem;
+            box-shadow: var(--shadow-card);
+            margin-bottom: 1.5rem;
+        }
+
+        .card:hover {
+            background: var(--bg-card-hover);
+        }
+
+        /* Header Layout */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-card);
+            padding-bottom: 1.5rem;
+        }
+
+        .header-title-box h1 {
+            font-size: 2.25rem;
+            background: linear-gradient(135deg, #fff 30%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.25rem;
+        }
+
+        [data-theme="light"] .header-title-box h1 {
+            background: linear-gradient(135deg, var(--primary) 30%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-meta {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .header-meta span i {
+            color: var(--accent);
+            margin-right: 0.35rem;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: #ffffff;
+            border: none;
+            padding: 0.65rem 1.25rem;
+            border-radius: 8px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(32, 58, 113, 0.2);
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-heading);
+            border: 1px solid var(--border-card);
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        [data-theme="light"] .btn-outline:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        /* Top Grid - Scores & Quick Info */
+        .top-grid {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 992px) {
+            .top-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Large Circle Overall Score Indicator */
+        .overall-score-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: radial-gradient(circle at top, var(--accent-glow) 0%, transparent 80%), var(--bg-card);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .overall-score-ring {
+            position: relative;
+            width: 170px;
+            height: 170px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .overall-score-ring svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .overall-score-ring circle {
+            fill: none;
+            stroke-width: 12;
+            stroke-linecap: round;
+        }
+
+        .overall-score-ring .ring-bg {
+            stroke: rgba(255, 255, 255, 0.05);
+        }
+
+        [data-theme="light"] .overall-score-ring .ring-bg {
+            stroke: rgba(0, 0, 0, 0.05);
+        }
+
+        .overall-score-ring .ring-val {
+            stroke: var(--accent);
+            stroke-dasharray: 496.37; /* 2 * pi * r = 2 * 3.14159 * 79 = 496.37 */
+            stroke-dashoffset: 223.37; /* 55% = 223.37 */
+            animation: progressRing 1.5s ease-out forwards;
+        }
+
+        .overall-score-text {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .overall-score-number {
+            font-size: 3.25rem;
+            font-weight: 800;
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-heading);
+            line-height: 1;
+        }
+
+        .overall-score-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Detailed Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 1.25rem;
+            width: 100%;
+        }
+
+        .metric-score-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 1.25rem 0.75rem;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        [data-theme="light"] .metric-score-card {
+            background: rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .metric-score-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .metric-ring {
+            position: relative;
+            width: 76px;
+            height: 76px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .metric-ring svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .metric-ring circle {
+            fill: none;
+            stroke-width: 6;
+            stroke-linecap: round;
+        }
+
+        .metric-ring .ring-bg {
+            stroke: rgba(255, 255, 255, 0.05);
+        }
+
+        [data-theme="light"] .metric-ring .ring-bg {
+            stroke: rgba(0, 0, 0, 0.05);
+        }
+
+        .metric-ring .ring-val {
+            stroke-dasharray: 219.91; /* 2 * pi * r = 2 * 3.14159 * 35 = 219.91 */
+        }
+
+        .metric-score-num {
+            position: absolute;
+            font-size: 1.45rem;
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-heading);
+        }
+
+        .metric-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Tech Overview Layout */
+        .tech-overview-box {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .tech-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 1rem 1.25rem;
+            border-radius: 10px;
+        }
+
+        [data-theme="light"] .tech-item {
+            background: rgba(0, 0, 0, 0.015);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .tech-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            background: rgba(32, 58, 113, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .tech-details h4 {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        .tech-details p {
+            font-size: 1rem;
+            color: var(--text-heading);
+            font-weight: 600;
+        }
+
+        .tech-details p span.status-badge {
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+            font-size: 0.75rem;
+            border-radius: 4px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge-active {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+        }
+
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.15);
+            color: #f59e0b;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--border-card);
+            padding-bottom: 0.75rem;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .nav-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-heading);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        [data-theme="light"] .tab-btn:hover {
+            background: rgba(0, 0, 0, 0.03);
+        }
+
+        .tab-btn.active {
+            color: var(--accent);
+            background: var(--tab-active-bg);
+            border: 1px solid var(--border-card);
+        }
+
+        /* Tab Content Panes */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        /* Split layouts */
+        .split-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 992px) {
+            .split-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel-box {
+            padding: 1.5rem;
+            border-radius: 12px;
+            height: 100%;
+        }
+
+        .panel-strengths {
+            background: rgba(16, 185, 129, 0.03);
+            border: 1px solid rgba(16, 185, 129, 0.15);
+        }
+
+        .panel-opportunities {
+            background: rgba(239, 68, 68, 0.03);
+            border: 1px solid rgba(239, 68, 68, 0.15);
+        }
+
+        .panel-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.2rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .panel-strengths .panel-title {
+            color: #10b981;
+        }
+
+        .panel-opportunities .panel-title {
+            color: #ef4444;
+        }
+
+        .panel-list {
+            list-style: none;
+        }
+
+        .panel-list li {
+            position: relative;
+            padding-left: 1.75rem;
+            margin-bottom: 0.85rem;
+            font-size: 0.95rem;
+        }
+
+        .panel-list li::before {
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            top: 0.1rem;
+        }
+
+        .panel-strengths .panel-list li::before {
+            content: "\f00c";
+            color: #10b981;
+        }
+
+        .panel-opportunities .panel-list li::before {
+            content: "\f00d";
+            color: #ef4444;
+        }
+
+        /* Alert Callouts */
+        .alert-box {
+            background: rgba(245, 158, 11, 0.04);
+            border-left: 4px solid var(--score-average);
+            padding: 1.25rem 1.5rem;
+            border-radius: 0 10px 10px 0;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        .alert-box.danger {
+            background: rgba(239, 68, 68, 0.04);
+            border-left-color: var(--score-poor);
+        }
+
+        .alert-box h4 {
+            margin-bottom: 0.35rem;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .alert-box.danger h4 {
+            color: #ef4444;
+        }
+
+        .alert-box.warning h4 {
+            color: #f59e0b;
+        }
+
+        /* Performance Metric Gauge */
+        .perf-metric-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 3fr;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.25rem 0;
+            border-bottom: 1px solid var(--border-card);
+        }
+
+        @media (max-width: 576px) {
+            .perf-metric-row {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+        }
+
+        .perf-metric-info h4 {
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        .perf-metric-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .perf-metric-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            text-align: right;
+        }
+
+        @media (max-width: 576px) {
+            .perf-metric-value {
+                text-align: left;
+            }
+        }
+
+        .perf-progress-bar {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        [data-theme="light"] .perf-progress-bar {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .perf-progress-fill {
+            height: 100%;
+            border-radius: 5px;
+        }
+
+        /* Tables */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-heading);
+            font-weight: 600;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-card);
+            font-family: 'Outfit', sans-serif;
+        }
+
+        [data-theme="light"] th {
+            background: rgba(32, 58, 113, 0.04);
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-card);
+            color: var(--text-main);
+            vertical-align: top;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        [data-theme="light"] tr:hover td {
+            background: rgba(0, 0, 0, 0.01);
+        }
+
+        /* Status badges */
+        .status-badge {
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+            font-size: 0.75rem;
+            border-radius: 4px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .pill-danger {
+            background: rgba(239, 68, 68, 0.12);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .pill-warning {
+            background: rgba(245, 158, 11, 0.12);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .pill-success {
+            background: rgba(16, 185, 129, 0.12);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        /* Grid systems */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Action list items */
+        .action-card {
+            border-left: 4px solid var(--accent);
+            padding-left: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .action-card.high {
+            border-left-color: var(--score-poor);
+        }
+
+        .action-card.medium {
+            border-left-color: var(--score-average);
+        }
+
+        .action-card.low {
+            border-left-color: var(--primary-light);
+        }
+
+        .action-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+
+        .action-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .action-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Screenshot Container styling */
+        .screenshot-container {
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-card);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+            background: #1e293b;
+        }
+
+        .screenshot-header {
+            background: #0f172a;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--border-card);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .screenshot-header span.dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .screenshot-img {
+            display: block;
+            width: 100%;
+            max-height: 480px;
+            object-fit: contain;
+            object-position: top;
+            background: #111827;
+        }
+
+        /* Checkbox items for quick wins */
+        .win-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 576px) {
+            .win-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .win-item {
+            background: rgba(16, 185, 129, 0.04);
+            border: 1px solid rgba(16, 185, 129, 0.12);
+            padding: 1rem;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .win-item i {
+            color: #10b981;
+            font-size: 1.2rem;
+        }
+
+        /* Print formatting */
+        @media print {
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+            }
+            .container {
+                max-width: 100% !important;
+                padding: 0 !important;
+            }
+            .header-controls, .nav-tabs {
+                display: none !important;
+            }
+            .tab-content {
+                display: block !important;
+                page-break-after: always;
+            }
+            .card {
+                background: none !important;
+                border: 1px solid #ddd !important;
+                box-shadow: none !important;
+                page-break-inside: avoid;
+            }
+            .screenshot-container {
+                page-break-inside: avoid;
+            }
+            h1, h2, h3, h4, h5, h6 {
+                color: #000000 !important;
+            }
+            .header-title-box h1 {
+                background: none !important;
+                -webkit-text-fill-color: initial !important;
+                color: #203a71 !important;
+            }
+        }
+    </style>
+</head>
+<body data-theme="dark">
+    <div class="container">
+        <!-- Dashboard Header -->
+        <header>
+            <div class="header-title-box">
+                <h1>Website & Digital Presence Audit</h1>
+                <div class="header-meta">
+                    <span><i class="fa-solid fa-building"></i> Prepared For: InHouse Incorp</span>
+                    <span><i class="fa-solid fa-globe"></i> Website: <a href="https://www.inhouseincorp.com/" target="_blank" style="color: var(--accent); text-decoration: none;">inhouseincorp.com</a></span>
+                    <span><i class="fa-solid fa-user-tie"></i> Audit By: Mutant Technologies</span>
+                    <span><i class="fa-solid fa-calendar-days"></i> Date: 26/06/2026</span>
+                </div>
+            </div>
+            <div class="header-controls">
+                <button class="btn btn-outline" id="theme-toggle" title="Toggle Light/Dark Theme">
+                    <i class="fa-solid fa-sun"></i> Toggle Theme
+                </button>
+                <button class="btn" onclick="window.print()">
+                    <i class="fa-solid fa-file-pdf"></i> Export PDF
+                </button>
+            </div>
+        </header>
+
+        <!-- Top Row Grid (Overall Score & Metrics Overview) -->
+        <div class="top-grid">
+            <div class="card overall-score-card">
+                <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 1rem;">Overall Score</h3>
+                <div class="overall-score-ring">
+                    <svg>
+                        <circle class="ring-bg" cx="85" cy="85" r="79"></circle>
+                        <circle class="ring-val" cx="85" cy="85" r="79" id="overall-ring-val"></circle>
+                    </svg>
+                    <div class="overall-score-text">
+                        <span class="overall-score-number">5.5</span>
+                        <span class="overall-score-label">of 10</span>
+                    </div>
+                </div>
+                <div class="status-pill pill-warning" style="margin-top: 0.5rem;"><i class="fa-solid fa-triangle-exclamation"></i> Needs Action</div>
+            </div>
+
+            <div class="card">
+                <h3 style="font-size: 1.25rem; margin-bottom: 1.25rem; font-weight: 600;"><i class="fa-solid fa-chart-simple" style="color: var(--accent); margin-right: 0.5rem;"></i> Category Breakdown</h3>
+                <div class="metrics-grid">
+                    <!-- Design -->
+                    <div class="metric-score-card">
+                        <div class="metric-ring">
+                            <svg><circle class="ring-bg" cx="38" cy="38" r="34"></circle><circle class="ring-val" cx="38" cy="38" r="34" stroke="var(--score-good)" stroke-dashoffset="43.98" id="design-ring"></svg> <!-- 80% = 43.98 offset -->
+                            <span class="metric-score-num">8</span>
+                        </div>
+                        <span class="metric-title">Design</span>
+                    </div>
+                    <!-- UX -->
+                    <div class="metric-score-card">
+                        <div class="metric-ring">
+                            <svg><circle class="ring-bg" cx="38" cy="38" r="34"></circle><circle class="ring-val" cx="38" cy="38" r="34" stroke="var(--score-average)" stroke-dashoffset="109.95" id="ux-ring"></svg> <!-- 50% = 109.95 offset -->
+                            <span class="metric-score-num">5</span>
+                        </div>
+                        <span class="metric-title">UX</span>
+                    </div>
+                    <!-- Speed -->
+                    <div class="metric-score-card">
+                        <div class="metric-ring">
+                            <svg><circle class="ring-bg" cx="38" cy="38" r="34"></circle><circle class="ring-val" cx="38" cy="38" r="34" stroke="var(--score-average)" stroke-dashoffset="109.95" id="speed-ring"></svg> <!-- 50% -->
+                            <span class="metric-score-num">5</span>
+                        </div>
+                        <span class="metric-title">Speed</span>
+                    </div>
+                    <!-- Mobile -->
+                    <div class="metric-score-card">
+                        <div class="metric-ring">
+                            <svg><circle class="ring-bg" cx="38" cy="38" r="34"></circle><circle class="ring-val" cx="38" cy="38" r="34" stroke="var(--score-average)" stroke-dashoffset="109.95" id="mobile-ring"></svg> <!-- 50% -->
+                            <span class="metric-score-num">5</span>
+                        </div>
+                        <span class="metric-title">Mobile</span>
+                    </div>
+                    <!-- SEO -->
+                    <div class="metric-score-card">
+                        <div class="metric-ring">
+                            <svg><circle class="ring-bg" cx="38" cy="38" r="34"></circle><circle class="ring-val" cx="38" cy="38" r="34" stroke="var(--score-average)" stroke-dashoffset="109.95" id="seo-ring"></svg> <!-- 50% -->
+                            <span class="metric-score-num">5</span>
+                        </div>
+                        <span class="metric-title">SEO</span>
+                    </div>
+                    <!-- Security -->
+                    <div class="metric-score-card">
+                        <div class="metric-ring">
+                            <svg><circle class="ring-bg" cx="38" cy="38" r="34"></circle><circle class="ring-val" cx="38" cy="38" r="34" stroke="var(--score-poor)" stroke-dashoffset="131.95" id="security-ring"></svg> <!-- 40% -->
+                            <span class="metric-score-num">4</span>
+                        </div>
+                        <span class="metric-title">Security</span>
+                    </div>
+                    <!-- CRO -->
+                    <div class="metric-score-card">
+                        <div class="metric-ring">
+                            <svg><circle class="ring-bg" cx="38" cy="38" r="34"></circle><circle class="ring-val" cx="38" cy="38" r="34" stroke="var(--score-average)" stroke-dashoffset="87.96" id="cro-ring"></svg> <!-- 60% -->
+                            <span class="metric-score-num">6</span>
+                        </div>
+                        <span class="metric-title">CRO</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Executive Summary & Immediate Critical Issues -->
+        <div class="card" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.7) 100%), var(--bg-card);">
+            <h2 style="font-size: 1.5rem; margin-bottom: 0.75rem;"><i class="fa-solid fa-briefcase" style="color: var(--accent); margin-right: 0.5rem;"></i> Executive Business Summary</h2>
+            <p style="font-size: 1.05rem; margin-bottom: 1.5rem;">
+                Overall, your website provides a professional first impression, but several technical and user experience issues are likely impacting search visibility, visitor trust, and conversion rates. Addressing these areas can improve loading speed, strengthen your online credibility, increase organic traffic, and generate more qualified business inquiries.
+            </p>
+            
+            <h3 style="font-size: 1.25rem; margin-bottom: 1rem; border-top: 1px solid var(--border-card); padding-top: 1.25rem; color: var(--text-heading);"><i class="fa-solid fa-triangle-exclamation" style="color: #ef4444; margin-right: 0.5rem;"></i> Immediate Critical Issues</h3>
+            <div class="grid-2" style="gap: 1rem;">
+                <div style="background: rgba(239, 68, 68, 0.03); border: 1px solid rgba(239, 68, 68, 0.12); padding: 0.85rem 1.25rem; border-radius: 8px; font-size: 0.95rem;">
+                    <strong style="color: #f87171;"><i class="fa-solid fa-link-slash"></i> Staging URL Link Leak:</strong> Menu links direct live site users away to insecure developer testing domains (<code>nimeshdetroja.co.in</code>).
+                </div>
+                <div style="background: rgba(239, 68, 68, 0.03); border: 1px solid rgba(239, 68, 68, 0.12); padding: 0.85rem 1.25rem; border-radius: 8px; font-size: 0.95rem;">
+                    <strong style="color: #f87171;"><i class="fa-solid fa-shield-cat"></i> Mixed Content Flags:</strong> Standard logos loading via insecure HTTP, triggering browsers' padlock warnings.
+                </div>
+                <div style="background: rgba(239, 68, 68, 0.03); border: 1px solid rgba(239, 68, 68, 0.12); padding: 0.85rem 1.25rem; border-radius: 8px; font-size: 0.95rem;">
+                    <strong style="color: #f87171;"><i class="fa-solid fa-border-none"></i> Broken Blog Grid:</strong> A layout bug causes the `/blog/` page to display items off-grid with massive empty voids.
+                </div>
+                <div style="background: rgba(239, 68, 68, 0.03); border: 1px solid rgba(239, 68, 68, 0.12); padding: 0.85rem 1.25rem; border-radius: 8px; font-size: 0.95rem;">
+                    <strong style="color: #f87171;"><i class="fa-solid fa-arrow-down-wide-short"></i> Bad H1 SEO Tag:</strong> Homepage H1 points to "Blogs" rather than your core manufacturing headlines.
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="tab-btn active" data-tab="tab-branding"><i class="fa-solid fa-compass-drafting"></i> Design & UX</button>
+            <button class="tab-btn" data-tab="tab-speed"><i class="fa-solid fa-gauge-high"></i> Performance & Mobile</button>
+            <button class="tab-btn" data-tab="tab-seo"><i class="fa-solid fa-chart-line"></i> SEO & Keywords</button>
+            <button class="tab-btn" data-tab="tab-security"><i class="fa-solid fa-lock"></i> Security & CRO</button>
+            <button class="tab-btn" data-tab="tab-comparison"><i class="fa-solid fa-code-compare"></i> Competitor & Actions</button>
+        </div>
+
+        <!-- TAB CONTENT: Design & UX -->
+        <div class="tab-content active" id="tab-branding">
+            <div class="card">
+                <h2 style="margin-bottom: 1.25rem; font-size: 1.5rem;"><i class="fa-solid fa-compass-drafting" style="color: var(--accent); margin-right: 0.5rem;"></i> Design & Branding Review</h2>
+                
+                <div class="split-grid" style="margin-bottom: 1.5rem;">
+                    <div class="panel-box panel-strengths">
+                        <h3 class="panel-title"><i class="fa-solid fa-circle-check"></i> What Works Well</h3>
+                        <ul class="panel-list">
+                            <li><strong>Good Color Palette:</strong> Corporate blue (<code>#203a71</code>) represents trust in global supplier sourcing.</li>
+                            <li><strong>Modern Fonts:</strong> Clean integrate load of Google Fonts Poppins and Roboto.</li>
+                            <li><strong>Clear Desktop Headers:</strong> Key services and menus are legible and distinct.</li>
+                        </ul>
+                    </div>
+
+                    <div class="panel-box panel-opportunities">
+                        <h3 class="panel-title"><i class="fa-solid fa-circle-xmark"></i> Areas for Improvement</h3>
+                        <ul class="panel-list">
+                            <li><strong>Clashing Logo bounding boxes:</strong> The main logo has a solid white background block that clashes visual elements in the header.</li>
+                            <li><strong>Broken Grid Spacing:</strong> Huge alignment voids on custom pages, notably the blogs list block.</li>
+                            <li><strong>Unsecured Staging URL dependencies:</strong> Logo points to an HTTP external staging URL.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 style="font-size: 1.25rem; margin-top: 2rem; margin-bottom: 1rem;">Visual Audit Details</h3>
+                <div class="grid-2">
+                    <div class="screenshot-container">
+                        <div class="screenshot-header">
+                            <span class="dot" style="background:#ef4444;"></span>
+                            <span>Live Page / blog/ - Broken Grid Alignment</span>
+                        </div>
+                        <img class="screenshot-img" src="./images/broken_blog.png" alt="Broken Blog Page Layout">
+                    </div>
+                    <div class="screenshot-container">
+                        <div class="screenshot-header">
+                            <span class="dot" style="background:#ef4444;"></span>
+                            <span>Main Navigation Logo - Unblended Background Box & Insecure Source</span>
+                        </div>
+                        <img class="screenshot-img" src="./images/logo_clash.png" alt="Logo Clashing Bounding Box">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB CONTENT: Performance & Mobile -->
+        <div class="tab-content" id="tab-speed">
+            <div class="card">
+                <h2 style="margin-bottom: 1.25rem; font-size: 1.5rem;"><i class="fa-solid fa-gauge-high" style="color: var(--accent); margin-right: 0.5rem;"></i> Website Speed & Performance Analysis</h2>
+                
+                <div class="split-grid" style="margin-bottom: 2rem;">
+                    <div>
+                        <h3 style="font-size: 1.15rem; margin-bottom: 1rem;">Lighthouse Performance Scores</h3>
+                        <div style="display: flex; gap: 2rem; margin-bottom: 1.5rem; justify-content: center; text-align: center;">
+                            <div>
+                                <div style="font-size: 3rem; font-weight: 800; color: var(--score-average);">50</div>
+                                <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted);">Mobile Performance</div>
+                            </div>
+                            <div style="border-right: 1px solid var(--border-card);"></div>
+                            <div>
+                                <div style="font-size: 3rem; font-weight: 800; color: var(--score-average);">67</div>
+                                <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted);">Desktop Performance</div>
+                            </div>
+                        </div>
+
+                        <div class="perf-metric-row">
+                            <div class="perf-metric-info">
+                                <h4>Largest Contentful Paint (LCP)</h4>
+                                <p>Render time for main above-the-fold block.</p>
+                            </div>
+                            <div class="perf-metric-value" style="color: var(--score-poor);">11.0s</div>
+                            <div class="perf-progress-bar"><div class="perf-progress-fill" style="width: 100%; background: var(--score-poor);"></div></div>
+                        </div>
+
+                        <div class="perf-metric-row">
+                            <div class="perf-metric-info">
+                                <h4>First Contentful Paint (FCP)</h4>
+                                <p>Time until first visual element renders.</p>
+                            </div>
+                            <div class="perf-metric-value" style="color: var(--score-poor);">6.2s</div>
+                            <div class="perf-progress-bar"><div class="perf-progress-fill" style="width: 75%; background: var(--score-poor);"></div></div>
+                        </div>
+
+                        <div class="perf-metric-row">
+                            <div class="perf-metric-info">
+                                <h4>Total Blocking Time (TBT)</h4>
+                                <p>Time browser is blocked from responsive input.</p>
+                            </div>
+                            <div class="perf-metric-value" style="color: var(--score-average);">320ms</div>
+                            <div class="perf-progress-bar"><div class="perf-progress-fill" style="width: 45%; background: var(--score-average);"></div></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 style="font-size: 1.15rem; margin-bottom: 1rem;">Mobile Responsiveness Layout</h3>
+                        <div class="screenshot-container" style="margin: 0;">
+                            <div class="screenshot-header">
+                                <span class="dot" style="background:#fbbf24;"></span>
+                                <span>Mobile Layout Viewport Audit</span>
+                            </div>
+                            <img class="screenshot-img" src="./images/mobile_responsiveness.png" alt="Mobile Sizing Layout View">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="screenshot-container">
+                        <div class="screenshot-header">
+                            <span>PageSpeed Mobile Insight Report</span>
+                        </div>
+                        <img class="screenshot-img" src="./images/pagespeed_mobile.png" alt="Mobile speed score screenshot">
+                    </div>
+                    <div class="screenshot-container">
+                        <div class="screenshot-header">
+                            <span>LCP Speed Bottlenecks Breakdown</span>
+                        </div>
+                        <img class="screenshot-img" src="./images/pagespeed_metrics.png" alt="Mobile metrics diagnostics screenshot">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB CONTENT: SEO Audit -->
+        <div class="tab-content" id="tab-seo">
+            <div class="card">
+                <h2 style="margin-bottom: 1.25rem; font-size: 1.5rem;"><i class="fa-solid fa-chart-line" style="color: var(--accent); margin-right: 0.5rem;"></i> SEO Audit (Technical & On-Page)</h2>
+                
+                <div class="split-grid" style="margin-bottom: 2rem;">
+                    <div>
+                        <h3 style="font-size: 1.2rem; margin-bottom: 1rem; color: var(--text-heading);">Search Rankings Profile</h3>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Target Keyword</th>
+                                        <th>Position</th>
+                                        <th>Monthly Volume</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>ceramic city of india</td>
+                                        <td>11</td>
+                                        <td>210</td>
+                                    </tr>
+                                    <tr>
+                                        <td>tiles defect</td>
+                                        <td>36 / 67</td>
+                                        <td>590</td>
+                                    </tr>
+                                    <tr>
+                                        <td>inhouse team</td>
+                                        <td>45</td>
+                                        <td>110</td>
+                                    </tr>
+                                    <tr>
+                                        <td>due to inspection of components...</td>
+                                        <td>70</td>
+                                        <td>390</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-card); padding: 1.25rem; border-radius: 8px; margin-top: 1rem;">
+                            <h4 style="font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--accent);">Technical SEO Gaps</h4>
+                            <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">• Homepage Title is 109 characters (Google limits search snippet titles to 60 characters maximum).</p>
+                            <p style="font-size: 0.9rem;">• 13 out of 19 images lack alt tags, blocking image indexing pathways.</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 style="font-size: 1.2rem; margin-bottom: 1rem; color: var(--text-heading);">SEMrush Traffic Metrics</h3>
+                        <div class="screenshot-container" style="margin: 0; margin-bottom: 1rem;">
+                            <img class="screenshot-img" src="./images/semrush_traffic.png" alt="SEMrush Traffic Summary">
+                        </div>
+                        <div class="screenshot-container" style="margin: 0;">
+                            <img class="screenshot-img" src="./images/semrush_keywords.png" alt="SEMrush Keywords Rankings">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB CONTENT: Security & CRO -->
+        <div class="tab-content" id="tab-security">
+            <div class="card">
+                <h2 style="margin-bottom: 1.25rem; font-size: 1.5rem;"><i class="fa-solid fa-lock" style="color: var(--accent); margin-right: 0.5rem;"></i> Security & Conversion Optimization (CRO)</h2>
+                
+                <div class="split-grid">
+                    <div>
+                        <h3 style="font-size: 1.2rem; margin-bottom: 1rem; color: var(--text-heading);">Domain Vulnerability Metrics</h3>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Audited Element</th>
+                                        <th>Status</th>
+                                        <th>Risk / Impact</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Asset Protocol Leak</td>
+                                        <td><span class="status-badge pill-danger">Mixed Content</span></td>
+                                        <td>Triggers insecure asset notices in user browsers.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>User Enumeration</td>
+                                        <td><span class="status-badge pill-danger">Exposed</span></td>
+                                        <td>Exposes login author names (<code>nimesh</code>) to targeted scripts.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Security Headers</td>
+                                        <td><span class="status-badge pill-warning">Missing</span></td>
+                                        <td>Lack of X-Frame-Options, Content Security Policy, X-Content-Type.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Spam Cover</td>
+                                        <td><span class="status-badge pill-warning">Weak</span></td>
+                                        <td>Lead capture forms lack spam blocker shields.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 style="font-size: 1.2rem; margin-bottom: 1rem; color: var(--text-heading);">CRO Trust Signal Improvements</h3>
+                        <p style="font-size: 0.95rem; margin-bottom: 1rem;">
+                            While call forms and WhatsApp buttons are present, missing credibility elements directly lower potential conversions:
+                        </p>
+                        <ul class="panel-list">
+                            <li style="font-size: 0.9rem;"><strong>No Client Logo Grid:</strong> Lacks visual authority proving which tile or automotive manufacturers utilize InHouse.</li>
+                            <li style="font-size: 0.9rem;"><strong>Unverified Testimonials:</strong> Reviews are formatted in plain text blocks with no customer headshots or company brands.</li>
+                            <li style="font-size: 0.9rem;"><strong>Hidden Credentials:</strong> The ISO certificate link is hidden in a raw footer PDF rather than proudly showcased as a landing page quality trust badge.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB CONTENT: Competitor & Opportunities -->
+        <div class="tab-content" id="tab-comparison">
+            <!-- Business Impact Table -->
+            <div class="card">
+                <h2 style="margin-bottom: 1.25rem; font-size: 1.5rem;"><i class="fa-solid fa-chart-line" style="color: var(--accent); margin-right: 0.5rem;"></i> Business Impact & Priorities Mapping</h2>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Identified Issue</th>
+                                <th>Business Impact</th>
+                                <th style="text-align: center;">Priority</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Mixed Content Warnings</strong></td>
+                                <td>Reduces visitor trust and may trigger browser warning notices.</td>
+                                <td style="text-align: center;"><span class="status-badge pill-danger">High</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Broken Blog grid Layout</strong></td>
+                                <td>Creates an unprofessional brand impression for corporate prospects.</td>
+                                <td style="text-align: center;"><span class="status-badge pill-danger">High</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Slow Mobile Loading</strong></td>
+                                <td>Causes higher bounce rates and decreases the volume of quote requests.</td>
+                                <td style="text-align: center;"><span class="status-badge pill-danger">High</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Missing Image Alt tags</strong></td>
+                                <td>Missed organic search engine visual keywords rankings opportunities.</td>
+                                <td style="text-align: center;"><span class="status-badge pill-warning">Medium</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Weak security Headers</strong></td>
+                                <td>Increases domain penetration risk and targeted WordPress scripting attacks.</td>
+                                <td style="text-align: center;"><span class="status-badge pill-warning">Medium</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Quick Wins -->
+            <div class="card" style="background: rgba(16, 185, 129, 0.02); border: 1px solid rgba(16, 185, 129, 0.15);">
+                <h2 style="margin-bottom: 1.25rem; font-size: 1.5rem; color: #10b981;"><i class="fa-solid fa-circle-check" style="margin-right: 0.5rem;"></i> Quick Wins (1–3 Days)</h2>
+                <div class="win-list">
+                    <div class="win-item"><i class="fa-solid fa-circle-check"></i> Fix staging menu redirects</div>
+                    <div class="win-item"><i class="fa-solid fa-circle-check"></i> Replace insecure logo file links</div>
+                    <div class="win-item"><i class="fa-solid fa-circle-check"></i> Correct homepage H1 code tag</div>
+                    <div class="win-item"><i class="fa-solid fa-circle-check"></i> Configure image alt text</div>
+                    <div class="win-item"><i class="fa-solid fa-circle-check"></i> Set expiration cache headers</div>
+                    <div class="win-item"><i class="fa-solid fa-circle-check"></i> Compress large page backgrounds</div>
+                </div>
+            </div>
+
+            <!-- Next Steps -->
+            <div class="card" style="background: linear-gradient(135deg, var(--primary-dark) 0%, rgba(32, 58, 113, 0.4) 100%);">
+                <h2 style="margin-bottom: 0.5rem; font-size: 1.5rem; color: #ffffff;"><i class="fa-solid fa-calendar-check" style="color: var(--accent); margin-right: 0.5rem;"></i> Conclusion & Next Steps</h2>
+                <p style="margin-bottom: 1.25rem; font-size: 1.05rem;">
+                    Your website already has a solid foundation, but several technical and UX issues are preventing it from performing at its full potential.
+                </p>
+                <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+                    <div style="flex: 1; min-width: 250px;">
+                        <h4 style="color: var(--accent); margin-bottom: 0.25rem;">We expected:</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-main);">• Improved search engine rankings</p>
+                        <p style="font-size: 0.9rem; color: var(--text-main);">• Faster page load response times</p>
+                        <p style="font-size: 0.9rem; color: var(--text-main);">• Better mobile touch target flows</p>
+                        <p style="font-size: 0.9rem; color: var(--text-main);">• Higher lead inquiries and form actions</p>
+                    </div>
+                    <div style="flex: 1; min-width: 280px; border-left: 1px solid var(--border-card); padding-left: 1.5rem;">
+                        <h4 style="color: #ffffff; margin-bottom: 0.5rem;">Interested in implementing these fixes?</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">
+                            Let's set up a brief 30-minute call to go over these findings and draft a roadmap based on your team's immediate business priorities.
+                        </p>
+                        <a href="mailto:connect@mutanttechnologies.com" class="btn"><i class="fa-solid fa-envelope"></i> Request Consultation</a>
+                    </div>
+                </div>
+                <div style="font-size: 0.75rem; color: var(--text-muted); border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.75rem;">
+                    Disclaimer: This audit is based on publicly accessible data and automated analysis tools. Backend server-level configuration access is recommended for complete implementation verification.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Tabs Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const contents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    contents.forEach(c => c.classList.remove('active'));
+
+                    tab.classList.add('active');
+                    const targetId = tab.getAttribute('data-tab');
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+
+            // Theme Toggle Logic
+            const themeToggle = document.getElementById('theme-toggle');
+            const body = document.body;
+
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = body.getAttribute('data-theme');
+                if (currentTheme === 'dark') {
+                    body.setAttribute('data-theme', 'light');
+                    themeToggle.innerHTML = '<i class="fa-solid fa-moon"></i> Toggle Theme';
+                } else {
+                    body.setAttribute('data-theme', 'dark');
+                    themeToggle.innerHTML = '<i class="fa-solid fa-sun"></i> Toggle Theme';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
