@@ -612,17 +612,17 @@ export default function Home() {
                   { label: 'Trust Signals', us: 'Basic', them: 'High-Profile', status: 'medium' },
                   { label: 'Technical SEO', us: 'Missing H1s', them: 'Optimized', status: 'high' }
                 ].map((metric, idx) => (
-                  <div key={idx} className="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-800/50 pb-4">
-                    <div className="font-bold text-slate-300 w-1/3 mb-2 md:mb-0">{metric.label}</div>
-                    <div className="flex w-full md:w-2/3 items-center gap-4">
-                      <div className="w-1/2 bg-slate-950 p-3 rounded-lg border border-slate-800 flex justify-between items-center">
-                        <span className="text-xs text-slate-500">Your Site</span>
-                        <span className={`font-bold text-sm ${colors[metric.status].split(' ')[1]}`}>{metric.us}</span>
+                  <div key={idx} className="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-800/50 pb-6 pt-2">
+                    <div className="font-bold text-slate-300 w-full md:w-1/3 mb-4 md:mb-0 text-lg md:text-base">{metric.label}</div>
+                    <div className="flex w-full md:w-2/3 flex-col sm:flex-row items-center gap-3 sm:gap-4">
+                      <div className="w-full sm:w-1/2 bg-slate-950 p-4 rounded-xl border border-slate-800 flex justify-between items-center shadow-inner">
+                        <span className="text-xs text-slate-500 uppercase tracking-wider font-bold">Your Site</span>
+                        <span className={`font-bold text-base ${colors[metric.status].split(' ')[1]}`}>{metric.us}</span>
                       </div>
-                      <span className="text-slate-600 font-bold">VS</span>
-                      <div className="w-1/2 bg-[#52C41A]/5 p-3 rounded-lg border border-[#52C41A]/20 flex justify-between items-center">
-                        <span className="text-xs text-[#52C41A]/70">Competitors</span>
-                        <span className="font-bold text-sm text-[#52C41A]">{metric.them}</span>
+                      <span className="text-slate-700 font-black text-sm my-1 sm:my-0 sm:block">VS</span>
+                      <div className="w-full sm:w-1/2 bg-[#52C41A]/5 p-4 rounded-xl border border-[#52C41A]/20 flex justify-between items-center shadow-inner">
+                        <span className="text-xs text-[#52C41A]/70 uppercase tracking-wider font-bold">Competitors</span>
+                        <span className="font-bold text-base text-[#52C41A]">{metric.them}</span>
                       </div>
                     </div>
                   </div>
